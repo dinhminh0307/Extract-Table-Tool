@@ -1,13 +1,14 @@
 const http = require('http');
 const fs = require('fs');
+const filepath = require('path');
 
 const path = './frontend/index.html';
-const cssPath = './frontend/sty.css';
-const jsPath = './frontend/scripts.js';
+const cssPath = './frontend/style.css';
+const jsPath = './frontend/script.js';
 
 // the function used to load the UI file from server to browser
 function loadContent(filename, resp) {
-    fs.readFile(path, (err, data) => {
+    fs.readFile(filename, (err, data) => {
         if (err) {
             resp.write('<p>404 Error</p>'); // return 404 error to user side
             resp.end();
@@ -32,24 +33,24 @@ const server = http.createServer((req,res) => {
     }
     console.log('request made');
     console.log(req.url);
-    res.writeHead(200, { 'Content-Type': 'text/html'}); // response as text
-    // send html response page with whole file content with fs module
-    if(req.url === '/') {
-        loadContent(path, res);
-    } else if(req.url === '/style.css') {
-        loadContent(cssPath, res);
-    } else if(req.url === '/script.js') {
-        loadContent(jsPath, res);
+    /* this will render all type of css and html */
+    switch (req.url) {
+        case '/style.css':
+            res.writeHead(200, {'Content-Type': 'text/css'});
+            loadContent(cssPath, res);
+            break;
+        case '/':
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            loadContent(path, res);
+            break;
+        case '/script.js':
+            res.writeHead(200, {'Content-Type': 'text/js'});
+            loadContent(jsPath, res);
+            break;
+        default:
+            res.end();
+            break
     }
-    // fs.readFile(path, (err, data) => {
-    //     if (err) {
-    //         res.write('<p>404 Error</p>'); // return 404 error to user side
-    //         res.end();
-    //     } else {
-    //         res.write(data); // return the html page to user side
-    //         res.end();
-    //     }
-    // })
 })
 
 const port = 3000; // port to communicate from browser to server

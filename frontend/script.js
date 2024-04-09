@@ -24,7 +24,6 @@ function test() {
             elements[0].parentNode.removeChild(elements[0]); // delete class untill it does not have child
         }
     })
-    return ctr;
 }
 
 
