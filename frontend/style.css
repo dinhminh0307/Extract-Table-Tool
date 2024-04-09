@@ -50,6 +50,25 @@ body {
     margin-bottom: 20px;
 }
 
+.auth-options {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    background-color: #f8f9fa; /* Light grey background */
+    vertical-align: top; /* here */
+}
+
+.auth-options a {
+    text-decoration: none;
+    color: #007bff; /* Bootstrap's default link color */
+    padding: 0 15px;
+}
+
+.auth-options a:hover {
+    text-decoration: underline;
+}
+
+
 .addPropertyButton {
     width: fit-content;
     text-align: center;

@@ -2,6 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const filepath = require('path');
 
+const common_path = './frontend/';
 const path = './frontend/index.html';
 const cssPath = './frontend/style.css';
 const jsPath = './frontend/script.js';
@@ -10,7 +11,7 @@ const jsPath = './frontend/script.js';
 function loadContent(filename, resp) {
     fs.readFile(filename, (err, data) => {
         if (err) {
-            resp.write('<p>404 Error</p>'); // return 404 error to user side
+            resp.write('<p>404 Error VCL</p>'); // return 404 error to user side
             resp.end();
         } else {
             resp.write(data); // return the html page to user side
@@ -46,6 +47,10 @@ const server = http.createServer((req,res) => {
         case '/script.js':
             res.writeHead(200, {'Content-Type': 'text/js'});
             loadContent(jsPath, res);
+            break;
+        case '/login/signup.html': // routing to another html page
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            loadContent(common_path + '/login/signup.html', res); // the folder login is inside the frontend folder
             break;
         default:
             res.end();
