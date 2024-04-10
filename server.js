@@ -20,42 +20,40 @@ function loadContent(filename, resp) {
     })
 }
 
+function getRootPage(request, response) {
+    switch (request.url) {
+        case '/style.css':
+            response.writeHead(200, {'Content-Type': 'text/css'});
+            loadContent(cssPath, response);
+            break;
+        case '/':
+            response.writeHead(200, {'Content-Type': 'text/html'});
+            loadContent(path, response);
+            break;
+        case '/script.js':
+            response.writeHead(200, {'Content-Type': 'text/js'});
+            loadContent(jsPath, response);
+            break;
+        case '/login/signup.html': // routing to another html page
+            response.writeHead(200, {'Content-Type': 'text/html'});
+            loadContent(common_path + '/login/signup.html', response); // the folder login is inside the frontend folder
+            break;
+        default:
+            response.statusCode = 404; // set status to 404 for not finding rendering file
+            response.writeHead(response.statusCode, {'Content-Type': 'text/html'}); // send the error code
+            loadContent(common_path + 'error.html', response);
+            break
+    }
+}
+
 const server = http.createServer((req,res) => {
     /*content type:
     plain/text: file to download
     text/html: html structure */
     // this function is executed when a request is made
 
-    /* ignore the favicon */
-    if(req.url === '/favicon.ico') {
-        res.writeHead(204); // No Content
-        res.end();
-        return;
-    }
-    console.log('request made');
-    console.log(req.url);
     /* this will render all type of css and html */
-    switch (req.url) {
-        case '/style.css':
-            res.writeHead(200, {'Content-Type': 'text/css'});
-            loadContent(cssPath, res);
-            break;
-        case '/':
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            loadContent(path, res);
-            break;
-        case '/script.js':
-            res.writeHead(200, {'Content-Type': 'text/js'});
-            loadContent(jsPath, res);
-            break;
-        case '/login/signup.html': // routing to another html page
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            loadContent(common_path + '/login/signup.html', res); // the folder login is inside the frontend folder
-            break;
-        default:
-            res.end();
-            break
-    }
+    getRootPage(req, res);
 })
 
 const port = 3000; // port to communicate from browser to server
