@@ -1,13 +1,13 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column; /* Organize content in a column */
+    align-items: center; /* Center content horizontally */
     height: 100vh;
     margin: 0;
-    background-color: #f4f4f4;
-    background-color: lightblue;
+    background-color: lightblue; /* No need to repeat the background-color property */
 }
+
 
 .container {
     width: 100%;
@@ -16,6 +16,10 @@ body {
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 60px; /* Adjust this value based on the height of your .auth-options to ensure the .container is centered */
+    display: flex;
+    justify-content: center;
+    
 }
 
 .form-container {
@@ -55,7 +59,8 @@ body {
     justify-content: flex-end;
     padding: 10px;
     background-color: #f8f9fa; /* Light grey background */
-    vertical-align: top; /* here */
+    position: absolute; /* Position it absolutely relative to the body */
+    top: 0; /* Align it to the top */
 }
 
 .auth-options a {

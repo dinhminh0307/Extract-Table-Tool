@@ -3,9 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
+    <title>Login & Signup Form</title>
+    <link rel="stylesheet" href="signup.css">
 </head>
 <body>
-    <h1>Login Form</h1>
+    <div class="form-container">
+        <div class="form-toggle">
+            <button id="login-toggle" onclick="toggleForm('login')">Login</button>
+            <button id="signup-toggle" onclick="toggleForm('signup')">Signup</button>
+        </div>
+        <div id="login-form">
+            <form>
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Password">
+                <button type="submit">Login</button>
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberLogin">
+                    <label for="rememberLogin">Remember Me</label>
+                </div>
+            </form>
+        </div>
+        <div id="signup-form" style="display: none;">
+            <form>
+                <input type="text" placeholder="Username">
+                <input type="email" placeholder="Email">
+                <input type="text" placeholder="Phone Number">
+                <input type="password" placeholder="Password">
+                <button type="submit">Signup</button>
+            </form>
+        </div>
+    </div>
+    <script src="login.js"></script>
 </body>
 </html>
