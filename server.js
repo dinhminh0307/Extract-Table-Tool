@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const filepath = require('path');
+const _ = require('lodash');
 
 const common_path = './frontend/';
 const path = './frontend/index.html';
