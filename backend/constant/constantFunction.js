@@ -17,6 +17,61 @@ function loadContent(filename, resp) {
     })
 }
 
+function extractSubString(str) {
+    let slash_idx = 0;
+    let dot_idx = 0;
+    let full_string = "";
+
+    // loop to find the last '/' element and return the index
+    for(let i = 0; i < str.length; i++) {
+        if(str[i] === '/') {
+            slash_idx = i;
+        }
+    }
+
+    // loop to find the first '.' element and return the index
+    for(let i = 0; i < str.length; i++) {
+        if(str[i] === '.') {
+            dot_idx = i;
+            continue;
+        }
+    }
+
+    // extract the substring between slash_idx and dot_idx
+    for(let i = slash_idx + 1; i < dot_idx; i++) {
+        full_string += str[i];
+    }
+
+    return full_string;
+}
+
+function isContain(src, des) {
+    let des_idx = 0;
+    let des_counter = 0;
+    for(let i = 0; i < src.length;i++) {
+        if(src[i] === des[des_idx]) {
+            des_idx++;
+            des_counter++;
+        } else {
+            while(des_counter > 0) {
+                i--;
+                des_counter--;
+                des_idx--;
+            }
+        }
+        if(des_idx === des.length) return 1;
+    }
+}
+
+function logAccessedToServer(request) {
+    if(request.url.length === 1) {
+        console.log("Accessed at main page");
+    }
+    if(isContain(request.url, "html") === 1) {
+        console.log("Accessed at " + extractSubString(request.url) + " page");
+    }
+}
+
 function getRootPage(request, response) {
     switch (request.url) {
         case '/style.css':
@@ -49,6 +104,9 @@ function getRootPage(request, response) {
             loadContent(common_path + 'error.html', response);
             break
     }
+    
+    // function to log accessed to server
+    logAccessedToServer(request);
 }
 
 

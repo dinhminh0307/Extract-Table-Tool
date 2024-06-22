@@ -1,8 +1,9 @@
 
-const getRootPage = require('./backend/constant/constantFunction.js')
+const getRootPage = require('./backend/constant/constantFunction.js');
 const http = require('http');
 const filepath = require('path');
 const _ = require('lodash');
+
 
 const server = http.createServer((req,res) => {
     /*content type:
@@ -12,6 +13,7 @@ const server = http.createServer((req,res) => {
 
     /* this will render all type of css and html */
     getRootPage(req, res);
+    
 })
 
 const port = 3000; // port to communicate from browser to server
