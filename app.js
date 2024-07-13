@@ -1,36 +1,64 @@
+const bodyParser = require('body-parser');
 const express = require('express');
-const common_path = './frontend/';
-const err_path = 'error/404.html'
-const path = './frontend/index.html';
-const cssPath = './frontend/style.css';
-const jsPath = './frontend/script.js';
-
+const path = require('path');
 const app = express();
+const body_parser = require('body-parser');
 
-app.use(express.static("frontend")); // the html file is static so that it just call once and other css and js will be called
-app.use(express.static(common_path + 'login')); // the html file is static so that it just call once and other css and js will be called
+const commonPath = './frontend/';
+const errorPath = 'error/404.html';
+const indexPath = path.join(commonPath, 'index.html');
 
-// listen for request
-app.listen(3000);
+app.use(express.static("frontend"));
+app.use(express.static(path.join(commonPath, 'login')));
+app.use(body_parser.urlencoded({extended: false})); // allow us to parse url encoded form, the extended is to deal with complicated url
 
-/**THe static will render all the file that link on the root path */
-app.get('/', (req,res)=> {
-    res.sendFile(path, {root : __dirname}); // send the file with its relative path to browser. root is the path that express knows on pc
+// Main route for the root URL
+app.get('/', (req, res) => {
+    res.sendFile(indexPath, { root: __dirname });
     console.log("Accessed at main page");
+    console.log(req.url);
 });
 
-
-app.get('/signup.html', (req,res)=> {
-    res.sendFile(common_path + 'login/signup.html', {root : __dirname}); // send the file with its relative path to browser. root is the path that express knows on pc
-    console.log("Accessed at main page");
+// Route to serve the signup page
+app.get('/signup.html', (req, res) => {
+    res.sendFile(path.join(commonPath, 'login/signup.html'), { root: __dirname });
+    console.log("Accessed signup page");
 });
 
-// if user type in the url, it will redirect
-app.get('/signup', (req,res) => {
+// Redirect /signup to /signup.html
+app.get('/signup', (req, res) => {
     res.redirect('/signup.html');
-    // _logAccessedToServer(req);
-})
+});
 
-app.use((req,res) => {
-    res.sendFile(common_path + err_path, {root : __dirname});
-})
+// handle post request, we need a module to parse the data form: body parser
+// The action in the html must specify correct route and the method must be whether post or get
+app.post('/post-success', (req, res) => {
+    console.log(req.body);
+    res.send('Success');
+});
+
+// Simple route to send a hello message
+app.get('/hello', (req, res) => {
+    res.send("Hello");
+    console.log('dcmm'); // Custom log message
+});
+
+// Dynamic route with validation
+app.get('/:name/:job', (req, res, next) => {
+    const { name, job } = req.params;
+    if (!name.match(/^[a-zA-Z]+$/) || !job.match(/^[a-zA-Z]+$/)) {
+        return next(); // Pass control to the next middleware (404 handler)
+    }
+    res.send(`Hello ${name} from ${job}`);
+    console.log(req.query); // Log query parameters if any
+});
+
+// 404 error handler for all other paths
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(commonPath, errorPath), { root: __dirname });
+});
+
+// Listen for requests on port 3000
+app.listen(3000, () => {
+    console.log(`Server is running on port 3000`);
+});

@@ -12,14 +12,14 @@
     </div>
     <div class="container">
         <div class="form-container">
-            <form id="urlForm">
+            <form id="urlForm" action="/post-success" method="post">
                 <div class="input-group">
                     <label for="urlInput">URL:</label>
-                    <input type="text" id="urlInput" placeholder="https://example.com">
+                    <input type="text" id="urlInput" placeholder="https://example.com" name="url"> <!------need to specify name to get the input data of form-->
                 </div>
                 <div class="input-group">
                     <label for="tableId">Table ID:</label>
-                    <input type="text" id="tableId" placeholder="Enter table ID">
+                    <input type="text" id="tableId" placeholder="Enter table ID" name="id">
                 </div>
                 <div id="additionalProperties" class="properties-container"></div>
                 <div class="button-group">
